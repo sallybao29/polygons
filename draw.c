@@ -102,12 +102,15 @@ void add_sphere( struct matrix * points,
     for ( longt = longStart; longt < longStop; longt++ ) {
       
       index = lat * (num_steps+1) + longt;
+      //add_polygon(points, );
+      /*
       add_edge( points, temp->m[0][index],
 		temp->m[1][index],
 		temp->m[2][index],
 		temp->m[0][index] + 1,
 		temp->m[1][index] + 1,
 		temp->m[2][index] );
+      */
     }//end points only
   }
   free_matrix(temp);
@@ -285,7 +288,7 @@ void add_box( struct matrix * points,
 
   //back
   add_polygon(points, x2, y, z2, x2, y2, z2, x, y, z2);
-  add_polygon(points, x2, y, z2, x2, y2, z2, x, y2, z2);
+  add_polygon(points, x, y, z2, x2, y2, z2, x, y2, z2);
 
   //right 
   add_polygon(points, x2, y, z, x2, y2, z, x2, y2, z2);
@@ -300,7 +303,8 @@ void add_box( struct matrix * points,
   add_polygon(points, x, y, z2, x2, y, z, x2, y, z2);
 
   //bottom
-  add_polygon(points
+  add_polygon(points, x, y2, z, x, y2, z2, x2, y2, z);
+  add_polygon(points, x2, y2, z, x, y2, z2, x2, y2, z2);
 }
   
 /*======== void add_circle() ==========

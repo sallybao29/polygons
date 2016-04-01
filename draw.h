@@ -30,6 +30,8 @@ void add_curve( struct matrix *points,
 		double x2, double y2,
 		double x3, double y3,
 		double step, int type );
+void add_box( struct matrix* points, double x, double y, double z,
+	      double width, double height, double depth);
 void add_sphere( struct matrix * points, 
 		      double cx, double cy, double r, 
 		      int step );
