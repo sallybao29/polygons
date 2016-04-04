@@ -89,12 +89,11 @@ void add_sphere( struct matrix * points,
   num_steps = MAX_STEPS / step;
 
   temp = new_matrix( 4, num_steps * num_steps );
-  //generate the points on the sphere
   generate_sphere( temp, cx, cy, r, step );
 
   int latStop, longStop, latStart, longStart;
   latStart = 0;
-  latStop = num_steps;
+  latStop = 1;
   longStart = 0;
   longStop = num_steps;
   
@@ -102,7 +101,25 @@ void add_sphere( struct matrix * points,
     for ( longt = longStart; longt < longStop; longt++ ) {
       
       index = lat * (num_steps+1) + longt;
-      //add_polygon(points, );
+      add_polygon(points, temp->m[0][index], 
+		  temp->m[1][index], 
+		  temp->m[2][index], 
+		  temp->m[0][index+1],
+		  temp->m[1][index+1],
+		  temp->m[2][index+1],
+		  temp->m[0][index+num_steps+1],
+		  temp->m[1][index+num_steps+1],
+		  temp->m[2][index+num_steps+1]);
+
+      add_polygon(points, temp->m[0][index], 
+		  temp->m[1][index], 
+		  temp->m[2][index], 
+		  temp->m[0][index+num_steps+1],
+		  temp->m[1][index+num_steps+1],
+		  temp->m[2][index+num_steps+1],
+		  temp->m[0][index+num_steps],
+		  temp->m[1][index+num_steps],
+		  temp->m[2][index+num_steps]);
       /*
       add_edge( points, temp->m[0][index],
 		temp->m[1][index],
@@ -149,11 +166,9 @@ void generate_sphere( struct matrix * points,
     for ( circle = circStart; circle < circStop; circle+= step ) {
 
       circ = (double)circle / MAX_STEPS;
-      x = r * cos( 2 * M_PI * circ ) + cx;
-      y = r * sin( 2 * M_PI * circ ) *
-	cos( 2 * M_PI * rot ) + cy;
-      z = r * sin( 2 * M_PI * circ ) *
-	sin( 2 * M_PI * rot );
+      x = r * cos( M_PI * circ ) + cx;
+      y = r * sin( M_PI * circ ) * cos( 2 * M_PI * rot ) + cy;
+      z = r * sin( M_PI * circ ) * sin( 2 * M_PI * rot );
 
       add_point( points, x, y, z);
     }
