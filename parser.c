@@ -134,7 +134,7 @@ void parse_file ( char * filename,
     else if (strncmp(line, "torus", strlen(line)) == 0 ) {
       fgets(line, 255, f);
       sscanf(line, "%lf %lf %lf %lf", &x, &y, &z, &z1);
-      add_torus(pm, x, y, z, z1, 1);
+      add_torus(pm, x, y, z, z1, 10);
     }
     else if ( strncmp(line, "scale", strlen(line)) == 0 ) {
       fgets(line, 255, f);
@@ -177,13 +177,13 @@ void parse_file ( char * filename,
     }
     else if ( strncmp(line, "display", strlen(line)) == 0 ) {
       clear_screen(s);
-      draw_lines(pm, s, g);
+      draw_polygons(pm, s, g);
       display(s);
     }
     else if ( strncmp(line, "save", strlen(line)) == 0 ) {
       fgets(line, 255, f);
       clear_screen(s);
-      draw_lines(pm, s, g);
+      draw_polygons(pm, s, g);
       save_extension(s, line);
     }
     else if ( strncmp(line, "clear", strlen(line)) == 0 ) {
