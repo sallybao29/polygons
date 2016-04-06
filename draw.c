@@ -31,9 +31,23 @@ void add_polygon( struct matrix *polygons,
 		  double x1, double y1, double z1, 
 		  double x2, double y2, double z2 ) {
 
-	add_point(polygons, x0, y0, z0);
+  add_point(polygons, x0, y0, z0);
   add_point(polygons, x1, y1, z1); 
   add_point(polygons, x2, y2, z2);
+}
+
+void get_vector(double v[3], double x0, double y0, double z0,
+		double x1, double y1, double z1){
+  v[0] = x1 - x0;
+  v[1] = y1 - y0;
+  v[2] = z1 - z0;
+}
+
+int is_visible(double x0, double y0, double z0,
+	       double x1, double y1, double z1,
+	       double x2, double y2, double z2){
+
+
 }
 
 /*======== void draw_polygons() ==========
@@ -52,11 +66,11 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   int i;
   for (i = 0; i < polygons -> lastcol - 2; i += 3){
     draw_line(polygons -> m[0][i], polygons -> m[1][i], 
-							polygons -> m[0][i+1], polygons -> m[1][i+1], s, c);
+	      polygons -> m[0][i+1], polygons -> m[1][i+1], s, c);
     draw_line(polygons -> m[0][i+1], polygons -> m[1][i+1], 
-							polygons -> m[0][i+2], polygons -> m[1][i+2], s, c);
+	      polygons -> m[0][i+2], polygons -> m[1][i+2], s, c);
     draw_line(polygons -> m[0][i+2], polygons -> m[1][i+2], 
-							polygons -> m[0][i], polygons -> m[1][i], s, c);
+	      polygons -> m[0][i], polygons -> m[1][i], s, c);
   }
 }
 
@@ -82,16 +96,16 @@ void add_sphere( struct matrix * points,
 		 int step ) {
 
   struct matrix * temp;
-	int lat, longt;
+  int lat, longt;
   int index, index2, index3, index4;
   int num_steps;
   
-	num_steps = MAX_STEPS / step;
+  num_steps = MAX_STEPS / step;
 
   temp = new_matrix( 4, num_steps * num_steps );
   generate_sphere( temp, cx, cy, r, step );
 
-	int latStop, longStop, latStart, longStart;
+  int latStop, longStop, latStart, longStart;
   latStart = 0;
   latStop = num_steps;
   longStart = 0;
@@ -100,55 +114,55 @@ void add_sphere( struct matrix * points,
   for ( lat = latStart; lat < latStop; lat++ ) {
     for ( longt = longStart; longt < longStop; longt++ ) {
       index = lat * num_steps + longt;
-			index2 = (index+1) % MAX_STEPS;
-			index3 = (index+num_steps) % MAX_STEPS;
-			index4 = (index+num_steps+1) % MAX_STEPS;
-			if (index % num_steps == 0){
-				add_polygon(points, temp->m[0][index],
-										temp->m[1][index],
-										temp->m[2][index],
-										temp->m[0][index2],
-										temp->m[1][index2],
-										temp->m[2][index2],
-										temp->m[0][index4],
-										temp->m[1][index4],
-										temp->m[2][index4]);
-			}
-			else if ((index + 2) % num_steps == 0){
-				add_polygon(points, temp->m[0][index],
-										temp->m[1][index],
-										temp->m[2][index],
-										temp->m[0][index2],
-										temp->m[1][index2],
-										temp->m[2][index2],
-										temp->m[0][index3],
-										temp->m[1][index3],
-										temp->m[2][index3]);
-			}
-			else if ((index + 1) % num_steps != 0){
-				add_polygon(points, temp->m[0][index], 
-										temp->m[1][index], 
-										temp->m[2][index], 
-										temp->m[0][index2],
-										temp->m[1][index2],
-										temp->m[2][index2],
-										temp->m[0][index4],
-										temp->m[1][index4],
-										temp->m[2][index4]);
+      index2 = (index+1) % MAX_STEPS;
+      index3 = (index+num_steps) % MAX_STEPS;
+      index4 = (index+num_steps+1) % MAX_STEPS;
+      if (index % num_steps == 0){
+	add_polygon(points, temp->m[0][index],
+		    temp->m[1][index],
+		    temp->m[2][index],
+		    temp->m[0][index2],
+		    temp->m[1][index2],
+		    temp->m[2][index2],
+		    temp->m[0][index4],
+		    temp->m[1][index4],
+		    temp->m[2][index4]);
+      }
+      else if ((index + 2) % num_steps == 0){
+	add_polygon(points, temp->m[0][index],
+		    temp->m[1][index],
+		    temp->m[2][index],
+		    temp->m[0][index2],
+		    temp->m[1][index2],
+		    temp->m[2][index2],
+		    temp->m[0][index3],
+		    temp->m[1][index3],
+		    temp->m[2][index3]);
+      }
+      else if ((index + 1) % num_steps != 0){
+	add_polygon(points, temp->m[0][index], 
+		    temp->m[1][index], 
+		    temp->m[2][index], 
+		    temp->m[0][index2],
+		    temp->m[1][index2],
+		    temp->m[2][index2],
+		    temp->m[0][index4],
+		    temp->m[1][index4],
+		    temp->m[2][index4]);
 
-				add_polygon(points, temp->m[0][index], 
-										temp->m[1][index], 
-										temp->m[2][index], 
-										temp->m[0][index4],
-										temp->m[1][index4],
-										temp->m[2][index4],
-										temp->m[0][index3],
-										temp->m[1][index3],
-										temp->m[2][index3]);
-			}
-		}
-	}
-	free_matrix(temp);
+	add_polygon(points, temp->m[0][index], 
+		    temp->m[1][index], 
+		    temp->m[2][index], 
+		    temp->m[0][index4],
+		    temp->m[1][index4],
+		    temp->m[2][index4],
+		    temp->m[0][index3],
+		    temp->m[1][index3],
+		    temp->m[2][index3]);
+      }
+    }
+  }
+  free_matrix(temp);
 }
 
 /*======== void generate_sphere() ==========
