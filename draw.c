@@ -82,16 +82,16 @@ void add_sphere( struct matrix * points,
 		 int step ) {
 
   struct matrix * temp;
-  int lat, longt;
-  int index;
+	int lat, longt;
+  int index, index2, index3, index4;
   int num_steps;
   
-  num_steps = MAX_STEPS / step;
+	num_steps = MAX_STEPS / step;
 
   temp = new_matrix( 4, num_steps * num_steps );
   generate_sphere( temp, cx, cy, r, step );
 
-  int latStop, longStop, latStart, longStart;
+	int latStop, longStop, latStart, longStart;
   latStart = 0;
   latStop = num_steps;
   longStart = 0;
@@ -99,49 +99,52 @@ void add_sphere( struct matrix * points,
   
   for ( lat = latStart; lat < latStop; lat++ ) {
     for ( longt = longStart; longt < longStop; longt++ ) {
-      index = lat * (num_steps) + longt;
+      index = lat * num_steps + longt;
+			index2 = (index+1) % MAX_STEPS;
+			index3 = (index+num_steps) % MAX_STEPS;
+			index4 = (index+num_steps+1) % MAX_STEPS;
 			if (index % num_steps == 0){
 				add_polygon(points, temp->m[0][index],
 										temp->m[1][index],
 										temp->m[2][index],
-										temp->m[0][index+1],
-										temp->m[1][index+1],
-										temp->m[2][index+1],
-										temp->m[0][index+num_steps+1],
-										temp->m[1][index+num_steps+1],
-										temp->m[2][index+num_steps+1]);
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4]);
 			}
-			if ((index + 2) % num_steps == 0){
+			else if ((index + 2) % num_steps == 0){
 				add_polygon(points, temp->m[0][index],
 										temp->m[1][index],
 										temp->m[2][index],
-										temp->m[0][index+1],
-										temp->m[1][index+1],
-										temp->m[2][index+1],
-										temp->m[0][index+num_steps],
-										temp->m[1][index+num_steps],
-										temp->m[2][index+num_steps]);
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index3],
+										temp->m[1][index3],
+										temp->m[2][index3]);
 			}
 			else if ((index + 1) % num_steps != 0){
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
-										temp->m[0][index+1],
-										temp->m[1][index+1],
-										temp->m[2][index+1],
-										temp->m[0][index+num_steps+1],
-										temp->m[1][index+num_steps+1],
-										temp->m[2][index+num_steps+1]);
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4]);
 
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
-										temp->m[0][index+num_steps+1],
-										temp->m[1][index+num_steps+1],
-										temp->m[2][index+num_steps+1],
-										temp->m[0][index+num_steps],
-										temp->m[1][index+num_steps],
-										temp->m[2][index+num_steps]);
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4],
+										temp->m[0][index3],
+										temp->m[1][index3],
+										temp->m[2][index3]);
 			}
 		}
 	}
@@ -214,7 +217,7 @@ void add_torus( struct matrix * points,
 
 	struct matrix * temp;
 	int lat, longt;
-	int index;
+  int index, index2, index3, index4;
 	int num_steps;
   
 	num_steps = MAX_STEPS / step;
@@ -230,26 +233,51 @@ void add_torus( struct matrix * points,
 	for ( lat = latStart; lat < latStop; lat++ )
 		for ( longt = longStart; longt < longtStop; longt++ ) {
 			index = lat * num_steps + longt;
-			if ((index + 1) % num_steps != 0){
+			index2 = (index+1) % MAX_STEPS;
+			index3 = (index+num_steps) % MAX_STEPS;
+			index4 = (index+num_steps+1) % MAX_STEPS;
+			if (index % num_steps == 0){
+				add_polygon(points, temp->m[0][index],
+										temp->m[1][index],
+										temp->m[2][index],
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4]);
+			}
+			else if ((index + 2) % num_steps == 0){
+				add_polygon(points, temp->m[0][index],
+										temp->m[1][index],
+										temp->m[2][index],
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index3],
+										temp->m[1][index3],
+										temp->m[2][index3]);
+			}
+			else if ((index + 1) % num_steps != 0){
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
-										temp->m[0][index+1],
-										temp->m[1][index+1],
-										temp->m[2][index+1],
-										temp->m[0][index+num_steps+1],
-										temp->m[1][index+num_steps+1],
-										temp->m[2][index+num_steps+1]);
+										temp->m[0][index2],
+										temp->m[1][index2],
+										temp->m[2][index2],
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4]);
 
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
-										temp->m[0][index+num_steps+1],
-										temp->m[1][index+num_steps+1],
-										temp->m[2][index+num_steps+1],
-										temp->m[0][index+num_steps],
-										temp->m[1][index+num_steps],
-										temp->m[2][index+num_steps]);
+										temp->m[0][index4],
+										temp->m[1][index4],
+										temp->m[2][index4],
+										temp->m[0][index3],
+										temp->m[1][index3],
+										temp->m[2][index3]);
 			}
 		}
 }
@@ -404,193 +432,193 @@ void add_circle( struct matrix * points,
 	====================*/
 void add_curve( struct matrix *points, 
 								double x0, double y0, 
-									double x1, double y1, 
-									double x2, double y2, 
-									double x3, double y3, 
-									double step, int type ) {
+								double x1, double y1, 
+								double x2, double y2, 
+								double x3, double y3, 
+								double step, int type ) {
 
-		double x, y, t;
-		struct matrix * xcoefs;
-		struct matrix * ycoefs;
+	double x, y, t;
+	struct matrix * xcoefs;
+	struct matrix * ycoefs;
   
-		//generate the coeficients
-		if ( type == BEZIER_MODE ) {
-			ycoefs = generate_curve_coefs(y0, y1, y2, y3, BEZIER_MODE);
-			xcoefs = generate_curve_coefs(x0, x1, x2, x3, BEZIER_MODE);
+	//generate the coeficients
+	if ( type == BEZIER_MODE ) {
+		ycoefs = generate_curve_coefs(y0, y1, y2, y3, BEZIER_MODE);
+		xcoefs = generate_curve_coefs(x0, x1, x2, x3, BEZIER_MODE);
+	}
+
+	else {
+		xcoefs = generate_curve_coefs(x0, x1, x2, x3, HERMITE_MODE);
+		ycoefs = generate_curve_coefs(y0, y1, y2, y3, HERMITE_MODE);
+	}
+
+	for (t=step; t <= 1; t+= step) {
+    
+		x = xcoefs->m[0][0] * t * t * t + xcoefs->m[1][0] * t * t
+			+ xcoefs->m[2][0] * t + xcoefs->m[3][0];
+
+		y = ycoefs->m[0][0] * t * t * t + ycoefs->m[1][0] * t * t
+			+ ycoefs->m[2][0] * t + ycoefs->m[3][0];
+
+		add_edge(points, x0, y0, 0, x, y, 0);
+		x0 = x;
+		y0 = y;
+	}
+
+	free_matrix(xcoefs);
+	free_matrix(ycoefs);
+}
+
+/*======== void add_point() ==========
+	Inputs:   struct matrix * points
+	int x
+	int y
+	int z 
+	Returns: 
+	adds point (x, y, z) to points and increment points.lastcol
+	if points is full, should call grow on points
+	====================*/
+void add_point( struct matrix * points, double x, double y, double z) {
+  
+	if ( points->lastcol == points->cols )
+		grow_matrix( points, points->lastcol + 100 );
+
+	points->m[0][points->lastcol] = x;
+	points->m[1][points->lastcol] = y;
+	points->m[2][points->lastcol] = z;
+	points->m[3][points->lastcol] = 1;
+
+	points->lastcol++;
+}
+
+/*======== void add_edge() ==========
+	Inputs:   struct matrix * points
+	int x0, int y0, int z0, int x1, int y1, int z1
+	Returns: 
+	add the line connecting (x0, y0, z0) to (x1, y1, z1) to points
+	should use add_point
+	====================*/
+void add_edge( struct matrix * points, 
+							 double x0, double y0, double z0, 
+							 double x1, double y1, double z1) {
+	add_point( points, x0, y0, z0 );
+	add_point( points, x1, y1, z1 );
+}
+
+/*======== void draw_lines() ==========
+	Inputs:   struct matrix * points
+	screen s
+	color c 
+	Returns: 
+	Go through points 2 at a time and call draw_line to add that line
+	to the screen
+	====================*/
+void draw_lines( struct matrix * points, screen s, color c) {
+
+	int i;
+ 
+	if ( points->lastcol < 2 ) {
+    
+		printf("Need at least 2 points to draw a line!\n");
+		return;
+	}
+
+	for ( i = 0; i < points->lastcol - 1; i+=2 ) {
+
+		draw_line( points->m[0][i], points->m[1][i], 
+							 points->m[0][i+1], points->m[1][i+1], s, c);
+	} 	       
+}
+
+
+void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
+ 
+	int x, y, d, dx, dy;
+
+	x = x0;
+	y = y0;
+  
+	//swap points so we're always draing left to right
+	if ( x0 > x1 ) {
+		x = x1;
+		y = y1;
+		x1 = x0;
+		y1 = y0;
+	}
+
+	//need to know dx and dy for this version
+	dx = (x1 - x) * 2;
+	dy = (y1 - y) * 2;
+
+	//positive slope: Octants 1, 2 (5 and 6)
+	if ( dy > 0 ) {
+
+		//slope < 1: Octant 1 (5)
+		if ( dx > dy ) {
+			d = dy - ( dx / 2 );
+  
+			while ( x <= x1 ) {
+				plot(s, c, x, y);
+
+				if ( d < 0 ) {
+					x = x + 1;
+					d = d + dy;
+				}
+				else {
+					x = x + 1;
+					y = y + 1;
+					d = d + dy - dx;
+				}
+			}
 		}
 
+		//slope > 1: Octant 2 (6)
 		else {
-			xcoefs = generate_curve_coefs(x0, x1, x2, x3, HERMITE_MODE);
-			ycoefs = generate_curve_coefs(y0, y1, y2, y3, HERMITE_MODE);
-		}
+			d = ( dy / 2 ) - dx;
+			while ( y <= y1 ) {
 
-		for (t=step; t <= 1; t+= step) {
-    
-			x = xcoefs->m[0][0] * t * t * t + xcoefs->m[1][0] * t * t
-				+ xcoefs->m[2][0] * t + xcoefs->m[3][0];
-
-			y = ycoefs->m[0][0] * t * t * t + ycoefs->m[1][0] * t * t
-				+ ycoefs->m[2][0] * t + ycoefs->m[3][0];
-
-			add_edge(points, x0, y0, 0, x, y, 0);
-			x0 = x;
-			y0 = y;
-		}
-
-		free_matrix(xcoefs);
-		free_matrix(ycoefs);
-	}
-
-	/*======== void add_point() ==========
-		Inputs:   struct matrix * points
-		int x
-		int y
-		int z 
-		Returns: 
-		adds point (x, y, z) to points and increment points.lastcol
-		if points is full, should call grow on points
-		====================*/
-	void add_point( struct matrix * points, double x, double y, double z) {
-  
-		if ( points->lastcol == points->cols )
-			grow_matrix( points, points->lastcol + 100 );
-
-		points->m[0][points->lastcol] = x;
-		points->m[1][points->lastcol] = y;
-		points->m[2][points->lastcol] = z;
-		points->m[3][points->lastcol] = 1;
-
-		points->lastcol++;
-	}
-
-	/*======== void add_edge() ==========
-		Inputs:   struct matrix * points
-		int x0, int y0, int z0, int x1, int y1, int z1
-		Returns: 
-		add the line connecting (x0, y0, z0) to (x1, y1, z1) to points
-		should use add_point
-		====================*/
-	void add_edge( struct matrix * points, 
-								 double x0, double y0, double z0, 
-								 double x1, double y1, double z1) {
-		add_point( points, x0, y0, z0 );
-		add_point( points, x1, y1, z1 );
-	}
-
-	/*======== void draw_lines() ==========
-		Inputs:   struct matrix * points
-		screen s
-		color c 
-		Returns: 
-		Go through points 2 at a time and call draw_line to add that line
-		to the screen
-		====================*/
-	void draw_lines( struct matrix * points, screen s, color c) {
-
-		int i;
- 
-		if ( points->lastcol < 2 ) {
-    
-			printf("Need at least 2 points to draw a line!\n");
-			return;
-		}
-
-		for ( i = 0; i < points->lastcol - 1; i+=2 ) {
-
-			draw_line( points->m[0][i], points->m[1][i], 
-								 points->m[0][i+1], points->m[1][i+1], s, c);
-		} 	       
-	}
-
-
-	void draw_line(int x0, int y0, int x1, int y1, screen s, color c) {
- 
-		int x, y, d, dx, dy;
-
-		x = x0;
-		y = y0;
-  
-		//swap points so we're always draing left to right
-		if ( x0 > x1 ) {
-			x = x1;
-			y = y1;
-			x1 = x0;
-			y1 = y0;
-		}
-
-		//need to know dx and dy for this version
-		dx = (x1 - x) * 2;
-		dy = (y1 - y) * 2;
-
-		//positive slope: Octants 1, 2 (5 and 6)
-		if ( dy > 0 ) {
-
-			//slope < 1: Octant 1 (5)
-			if ( dx > dy ) {
-				d = dy - ( dx / 2 );
-  
-				while ( x <= x1 ) {
-					plot(s, c, x, y);
-
-					if ( d < 0 ) {
-						x = x + 1;
-						d = d + dy;
-					}
-					else {
-						x = x + 1;
-						y = y + 1;
-						d = d + dy - dx;
-					}
+				plot(s, c, x, y );
+				if ( d > 0 ) {
+					y = y + 1;
+					d = d - dx;
+				}
+				else {
+					y = y + 1;
+					x = x + 1;
+					d = d + dy - dx;
 				}
 			}
+		}
+	}
 
-			//slope > 1: Octant 2 (6)
-			else {
-				d = ( dy / 2 ) - dx;
-				while ( y <= y1 ) {
+	//negative slope: Octants 7, 8 (3 and 4)
+	else { 
 
-					plot(s, c, x, y );
-					if ( d > 0 ) {
-						y = y + 1;
-						d = d - dx;
-					}
-					else {
-						y = y + 1;
-						x = x + 1;
-						d = d + dy - dx;
-					}
+		//slope > -1: Octant 8 (4)
+		if ( dx > abs(dy) ) {
+
+			d = dy + ( dx / 2 );
+  
+			while ( x <= x1 ) {
+
+				plot(s, c, x, y);
+
+				if ( d > 0 ) {
+					x = x + 1;
+					d = d + dy;
+				}
+				else {
+					x = x + 1;
+					y = y - 1;
+					d = d + dy + dx;
 				}
 			}
 		}
 
-		//negative slope: Octants 7, 8 (3 and 4)
-		else { 
+		//slope < -1: Octant 7 (3)
+		else {
 
-			//slope > -1: Octant 8 (4)
-			if ( dx > abs(dy) ) {
-
-				d = dy + ( dx / 2 );
-  
-				while ( x <= x1 ) {
-
-					plot(s, c, x, y);
-
-					if ( d > 0 ) {
-						x = x + 1;
-						d = d + dy;
-					}
-					else {
-						x = x + 1;
-						y = y - 1;
-						d = d + dy + dx;
-					}
-				}
-			}
-
-			//slope < -1: Octant 7 (3)
-			else {
-
-				d =  (dy / 2) + dx;
+			d =  (dy / 2) + dx;
 
 			while ( y >= y1 ) {
 	
