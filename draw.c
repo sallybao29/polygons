@@ -142,7 +142,7 @@ void add_sphere( struct matrix * points,
 			index2 = (index+1) % max;
 			index3 = (index+num_steps) % max;
 			index4 = (index+num_steps+1) % max;
-			if (index % num_steps == 0){
+			if (longt == 0){
 				add_polygon(points, temp->m[0][index],
 										temp->m[1][index],
 										temp->m[2][index],
@@ -153,7 +153,7 @@ void add_sphere( struct matrix * points,
 										temp->m[1][index4],
 										temp->m[2][index4]);
 			}
-			else if ((index + 2) % num_steps == 0){
+			else if (longt + 2 == num_steps){
 				add_polygon(points, temp->m[0][index],
 										temp->m[1][index],
 										temp->m[2][index],
@@ -164,7 +164,7 @@ void add_sphere( struct matrix * points,
 										temp->m[1][index3],
 										temp->m[2][index3]);
 			}
-			else if ((index + 1) % num_steps != 0){
+			else if (longt + 1 != num_steps){
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
@@ -277,7 +277,7 @@ void add_torus( struct matrix * points,
 			index3 = (index+num_steps) % max;
 			index4 = (index+num_steps+1) % max;
 			index5 = (index+1-num_steps) % max;
-			if ((index + 1) % num_steps == 0){
+			if (longt + 1 == num_steps){
 				add_polygon(points, temp->m[0][index], 
 										temp->m[1][index], 
 										temp->m[2][index], 
