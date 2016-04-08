@@ -123,8 +123,8 @@ void add_sphere( struct matrix * points,
 	int lat, longt;
 	int index, index2, index3, index4;
 	int num_steps;
-  
-	num_steps = MAX_STEPS / step;
+	
+	num_steps = MAX_STEPS / step + 1;
 
 	temp = new_matrix( 4, num_steps * num_steps );
 	generate_sphere( temp, cx, cy, r, step );
@@ -209,7 +209,7 @@ void add_sphere( struct matrix * points,
 void generate_sphere( struct matrix * points, 
 											double cx, double cy, double r, 
 											int step ) {
-
+ 
 	int circle, rotation;
 	double x, y, z, circ, rot;
 
@@ -218,9 +218,9 @@ void generate_sphere( struct matrix * points,
 	int circStart = step * 0;
 	int circStop = MAX_STEPS;
   
-	for ( rotation = rotStart; rotation < rotStop; rotation += step ) {
+	for ( rotation = rotStart; rotation <= rotStop; rotation += step ) {
 		rot = (double)rotation / MAX_STEPS;
-		for ( circle = circStart; circle < circStop; circle+= step ) {
+		for ( circle = circStart; circle <= circStop; circle += step ) {
 
 			circ = (double)circle / MAX_STEPS;
 			x = r * cos( M_PI * circ ) + cx;
@@ -230,7 +230,7 @@ void generate_sphere( struct matrix * points,
 			add_point( points, x, y, z);
 		}
 	}
-}    
+}
 
 /*======== void add_torus() ==========
 	Inputs:   struct matrix * points
